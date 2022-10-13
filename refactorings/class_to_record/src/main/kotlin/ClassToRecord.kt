@@ -32,6 +32,8 @@ class ClassToRecord {
                     // TODO check the use of the edit group
                     rewriter.replace(node, recordDeclaration, null)
                     hasChange = true
+                } else {
+                    println("Class is not convertable to record")
                 }
                 return true
             }

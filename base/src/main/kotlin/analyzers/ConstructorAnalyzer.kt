@@ -23,7 +23,7 @@ class ConstructorAnalyzer(val constructor: MethodDeclaration) : MethodAnalyzer(c
                             data.accessedFields[leftHandSide.name.fullyQualifiedName] == leftHandSide.resolveFieldBinding() &&
                             data.usedVariables[rightHandSide.fullyQualifiedName] == rightHandSide.resolveBinding()
                         ) {
-                            constructorData.nonFieldInitializingStatements.add(statement)
+                            constructorData.fieldInitializingStatements.add(statement)
                             return@forEach
                         }
 

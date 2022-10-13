@@ -1,5 +1,8 @@
 package analyzers
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import org.eclipse.jdt.core.dom.*
 import java.util.*
 
@@ -8,9 +11,13 @@ class TypeAnalyzer(val type: TypeDeclaration) : Analyzer() {
     val data = ClassOrInterfaceAnalytics()
 
     init {
-        collectFields()
-        collectConstructors()
-        collectMethods()
+        runBlocking {
+            listOf(
+                async { collectFields() },
+                async { collectConstructors() },
+                async { collectMethods() }
+            ).awaitAll()
+        }
     }
 
     override fun name() = type.name.identifier ?: "<UNDEFINED>"
@@ -36,6 +43,13 @@ class TypeAnalyzer(val type: TypeDeclaration) : Analyzer() {
         }
         return data.analyzedConstructors!!
     }
+
+    fun getImplementedInterfaces() = type.superInterfaceTypes()
+
+    public fun isInterface(): Boolean = type.isInterface
+
+    public fun extendsClass(): Boolean = !isInterface() && type.superclassType != null
+    public fun isAbstractClass(): Boolean = Modifier.isAbstract(type.modifiers)
 
     fun getNonSimpleGetterMethods(): LinkedList<MethodAnalyzer> {
         return splitMethodsIntoSimpleGettersAndOthers().second
@@ -99,6 +113,7 @@ class TypeAnalyzer(val type: TypeDeclaration) : Analyzer() {
     }
 
     inner class ClassOrInterfaceAnalytics {
+        val implementedInterfaces = LinkedList<String>()
         val fields = HashMap<String, VariableDeclarationFragment>()
         val constructors: MutableList<MethodDeclaration> = ArrayList()
         val methods = HashMap<String, MethodDeclaration>()

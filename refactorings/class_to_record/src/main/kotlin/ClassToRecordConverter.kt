@@ -88,6 +88,8 @@ internal class ClassToRecordConverter(
                 copyNode(methodAnalyzer.method, true)
             }
 
+        // TODO drop equals, hashCode and toString methods (maybe make it optional?)
+
         record.bodyDeclarations().addAll(methods)
     }
 

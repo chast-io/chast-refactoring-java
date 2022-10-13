@@ -15,6 +15,8 @@ repositories {
 dependencies {
     implementation("org.eclipse.jdt:org.eclipse.jdt.core:3.31.0")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+
     testImplementation(kotlin("test"))
 }
 
