@@ -38,3 +38,7 @@ tasks.withType<Jar> {
         attributes["Main-Class"] = "MainKt"
     }
 }
+
+tasks.shadowJar {
+    minimize()
+}
