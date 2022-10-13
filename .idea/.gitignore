@@ -1,0 +1,9 @@
+*
+
+!/codeStyles/
+!.gitignore
+!.name
+!kotlinc.xml
+!gradle.xml
+!misc.xml
+!vcs.xml
