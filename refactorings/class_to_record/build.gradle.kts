@@ -16,7 +16,6 @@ repositories {
 
 dependencies {
     implementation(project(":base"))
-
     implementation("org.eclipse.jdt:org.eclipse.jdt.core:3.31.0")
 
     testImplementation(kotlin("test"))
