@@ -1,12 +1,12 @@
 import CodeSyntaxVerifier.isValidCode
 import FileUtils.writeCodeToFile
 import analyzers.TypeAnalyzer
-import org.eclipse.jdt.core.JavaCore
-import org.eclipse.jdt.core.dom.ASTVisitor
-import org.eclipse.jdt.core.dom.TypeDeclaration
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite
-import org.eclipse.jdt.internal.compiler.impl.CompilerOptions
-import org.eclipse.jface.text.IDocument
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.JavaCore
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.ASTVisitor
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.TypeDeclaration
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.rewrite.ASTRewrite
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.compiler.impl.CompilerOptions
+import org.jboss.forge.roaster._shade.org.eclipse.jface.text.IDocument
 import java.io.File
 import java.util.*
 

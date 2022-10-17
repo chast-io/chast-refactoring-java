@@ -1,6 +1,6 @@
-import analyzers.TypeAnalyzer
 import kotlinx.coroutines.*
-import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.Modifier
+import spoon.reflect.declaration.CtClass
+import spoonExtensions.extension
 
 /**
  * Verifies if a class can be converted to a record.
@@ -25,11 +25,10 @@ import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.Modifier
  * - You can declare in a record's body static methods, static fields, static initializers, constructors, instance methods, and nested types
  * - You can annotate records and a record's individual components
  */
-internal class ClassToRecordVerifier(private val typeAnalyzer: TypeAnalyzer) {
+internal class ClassToRecordVerifier2(private val clazz: CtClass<*>) {
     fun isConvertableClass(): Boolean = runBlocking {
         try {
             runPreChecks()
-            analyzeFullType()
             runMainChecks()
 
             return@runBlocking true
@@ -41,55 +40,39 @@ internal class ClassToRecordVerifier(private val typeAnalyzer: TypeAnalyzer) {
 
     private suspend fun runPreChecks(): Unit = withContext(Dispatchers.Default) {
         awaitAll(
-            verificationCheck("is interface") { !typeAnalyzer.isInterface() },
-            verificationCheck("does extend other class") { !typeAnalyzer.extendsClass() },
-            verificationCheck("is abstract") { !typeAnalyzer.isAbstractClass() },
-        )
-    }
-
-    private suspend fun analyzeFullType(): Unit = withContext(Dispatchers.Default) {
-        awaitAll(
-            async { typeAnalyzer.analyzeConstructors() },
-            async { typeAnalyzer.analyzeMethods() }
+            verificationCheck("is interface") { !clazz.isInterface },
+            verificationCheck("does extend other class") { clazz.extendedModifiers.isNotEmpty() },
+            verificationCheck("is abstract") { !clazz.isAbstract },
+            verificationCheck("has no members") { clazz.fields.isNotEmpty() },
         )
     }
 
     private suspend fun runMainChecks(): Unit = withContext(Dispatchers.Default) {
         awaitAll(
             verificationCheck("has fields other than final and static") { hasOnlyFinalAndStaticFields() },
-            verificationCheck("has fields with no getter") { hasEveryFieldASimpleGetter() },
             verificationCheck("has initialized fields") { fieldsAreNotInitialized() },
-//            verificationCheck("has fields that do not get initialized by the constructor") { hasConstructorThatInitializesAllFields() },
+            verificationCheck("has fields that do not get initialized by the constructor") { hasConstructorThatInitializesAllFields() },
         )
     }
 
     private suspend fun hasOnlyFinalAndStaticFields(): Boolean = coroutineScope {
-        typeAnalyzer.data.fields.values.asSequence()
+        clazz.fields.asSequence()
             .onEach { ensureActive() }
-            .map { field -> field.resolveBinding() }
-            .all { field -> Modifier.isFinal(field.modifiers) || Modifier.isStatic(field.modifiers) }
-    }
-
-    // TODO check if this is optional
-    private suspend fun hasEveryFieldASimpleGetter(): Boolean = coroutineScope {
-        val fields = typeAnalyzer.data.fields.values.asSequence()
-            .onEach { ensureActive() }
-            .filter { field -> !Modifier.isStatic(field.resolveBinding().modifiers) }
-            .map { field -> field.name.fullyQualifiedName }
-            .toSet()
-
-        typeAnalyzer.getSimpleGetters().size == fields.size
+            .all { field -> field.isFinal || field.isStatic }
     }
 
     private suspend fun fieldsAreNotInitialized(): Boolean = coroutineScope {
-        typeAnalyzer.data.fields.values.asSequence()
+        clazz.fields.asSequence()
             .onEach { ensureActive() }
-            .filter { field -> !Modifier.isStatic(field.resolveBinding().modifiers) }
-            .none { field -> field.initializer != null }
+            .filter { !it.isStatic }
+            .none { it.defaultExpression != null }
     }
 
     private suspend fun hasConstructorThatInitializesAllFields(): Boolean = coroutineScope {
-        TODO("Not yet implemented")
+        clazz.constructors.asSequence()
+            .onEach { ensureActive() }
+            .map { it.extension() }
+            .any { constructor -> constructor.initializesAllFields(clazz.extension()) }
     }
 
     private suspend fun isNotExtended(): Boolean = coroutineScope {
@@ -106,5 +89,3 @@ internal class ClassToRecordVerifier(private val typeAnalyzer: TypeAnalyzer) {
     }
 
 }
-
-internal class ClassToRecordException(s: String) : Throwable(s)

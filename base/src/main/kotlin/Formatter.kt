@@ -1,10 +1,10 @@
-import org.eclipse.jdt.core.JavaCore
-import org.eclipse.jdt.core.ToolFactory
-import org.eclipse.jdt.core.formatter.CodeFormatter
-import org.eclipse.jdt.internal.compiler.impl.CompilerOptions
-import org.eclipse.jface.text.BadLocationException
-import org.eclipse.jface.text.IDocument
-import org.eclipse.text.edits.TextEdit
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.JavaCore
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.ToolFactory
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.formatter.CodeFormatter
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.compiler.impl.CompilerOptions
+import org.jboss.forge.roaster._shade.org.eclipse.jface.text.BadLocationException
+import org.jboss.forge.roaster._shade.org.eclipse.jface.text.IDocument
+import org.jboss.forge.roaster._shade.org.eclipse.text.edits.TextEdit
 import java.util.*
 
 object Formatter {

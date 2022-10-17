@@ -1,5 +1,5 @@
-import org.eclipse.jdt.core.dom.ASTNode
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.ASTNode
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.rewrite.ASTRewrite
 
 object RefactorUtils {
     inline fun <reified T : ASTNode> copyNode(node: T, rewriter: ASTRewrite, includeComments: Boolean = true): T {

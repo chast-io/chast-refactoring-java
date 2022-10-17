@@ -13,7 +13,10 @@ repositories {
 }
 
 dependencies {
-    implementation("org.eclipse.jdt:org.eclipse.jdt.core:3.31.0")
+    implementation("org.jboss.forge.roaster:roaster-api:2.26.0.Final")
+    implementation("org.jboss.forge.roaster:roaster-jdt:2.26.0.Final")
+
+    implementation("fr.inria.gforge.spoon:spoon-core:10.1.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
