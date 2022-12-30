@@ -1,3 +1,5 @@
+package roaster_jdt
+
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.JavaCore
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.AST
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.ASTParser

@@ -1,4 +1,4 @@
-package spoonExtensions
+package spoon.spoonExtensions
 
 import spoon.reflect.code.CtFieldRead
 import spoon.reflect.code.CtReturn

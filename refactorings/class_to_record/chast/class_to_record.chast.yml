@@ -1,0 +1,18 @@
+version: 1
+type: refactoring
+name: ClassToRecord
+maintainer: Raphael Jenni
+
+primaryParameter:
+  id: inputFile
+  type: filePath # filePath, folderPath, wildcardPath, string, int, boolean
+  description: The file to be refactored.
+
+run:
+  - id: class_to_record
+    supportedExtensions:
+      - java
+    script:
+      - java -jar ./class_to_record-1.0-SNAPSHOT-all.jar $inputFile
+    includeChangeLocations:
+      - $inputFile

@@ -18,7 +18,7 @@ dependencies {
     implementation(project(":base"))
     implementation("org.jboss.forge.roaster:roaster-jdt:2.26.0.Final")
 
-    implementation("fr.inria.gforge.spoon:spoon-core:10.1.1")
+    implementation("fr.inria.gforge.spoon:spoon-core:10.2.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
@@ -44,5 +44,5 @@ tasks.withType<Jar> {
 }
 
 tasks.shadowJar {
-    minimize()
+//    minimize()
 }

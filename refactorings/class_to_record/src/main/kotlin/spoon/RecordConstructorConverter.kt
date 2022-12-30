@@ -1,10 +1,12 @@
+package spoon
+
 import spoon.reflect.code.CtAssignment
 import spoon.reflect.code.CtStatementList
 import spoon.reflect.declaration.CtClass
 import spoon.reflect.declaration.CtConstructor
-import spoonExtensions.CtClassExtension
-import spoonExtensions.CtConstructorExtension
-import spoonExtensions.extension
+import spoon.spoonExtensions.CtClassExtension
+import spoon.spoonExtensions.CtConstructorExtension
+import spoon.spoonExtensions.extension
 
 class RecordConstructorConverter<T>(
     private val constructor: CtConstructor<T>,

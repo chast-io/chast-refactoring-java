@@ -1,3 +1,5 @@
+package roaster_jdt
+
 import CodeSyntaxVerifier.isValidCode
 import FileUtils.writeCodeToFile
 import analyzers.TypeAnalyzer
@@ -10,6 +12,10 @@ import org.jboss.forge.roaster._shade.org.eclipse.jface.text.IDocument
 import java.io.File
 import java.util.*
 
+
+/**
+ * No support for constructor conversion
+ */
 class ClassToRecord {
     private lateinit var rewriter: ASTRewrite
     private lateinit var typeAnalyzer: TypeAnalyzer
@@ -42,10 +48,15 @@ class ClassToRecord {
         if (hasChange) {
             applyChanges(parserContext.doc)
             val formattedCode = format(parserContext.doc)
-            if (isValidCode(formattedCode)) {
+            val (validCode, diagnosticCollector) = isValidCode(formattedCode)
+            if (validCode) {
                 writeCodeToFile(formattedCode, targetFile)
             } else {
-                println("Invalid code")
+                println("Invalid code: ")
+
+                for (error in diagnosticCollector.diagnostics) {
+                    println(error)
+                }
             }
         }
     }

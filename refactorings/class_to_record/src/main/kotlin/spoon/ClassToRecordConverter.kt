@@ -1,10 +1,11 @@
-import spoon.reflect.declaration.*
-import spoon.reflect.reference.CtTypeReference
-import spoon.support.reflect.declaration.CtRecordComponentImpl
-import spoonExtensions.CtClassExtension
-import spoonExtensions.extension
+package spoon
 
-internal class ClassToRecordConverter2(
+import spoon.reflect.declaration.*
+import spoon.support.reflect.declaration.CtRecordComponentImpl
+import spoon.spoonExtensions.CtClassExtension
+import spoon.spoonExtensions.extension
+
+internal class ClassToRecordConverter(
     private val clazz: CtClass<*>,
 ) {
     private val record: CtRecord = createRecord()
@@ -79,7 +80,7 @@ internal class ClassToRecordConverter2(
             .map {
                 val component = CtRecordComponentImpl()
                 component.setSimpleName<CtRecordComponent>(it.simpleName)
-                component.setType<CtRecordComponent>(it.type as CtTypeReference<Any>)
+                component.setType<CtRecordComponent>(it.type)
                 component
             }
             .forEach { record.addRecordComponent(it) }
@@ -101,7 +102,7 @@ internal class ClassToRecordConverter2(
             .filterIsInstance<CtConstructor<*>>()
             .map { RecordConstructorConverter(it.extension(), classExtension).convert() }
             .filterNotNull()
-            .forEach { record.addConstructor<CtRecord>(it as CtConstructor<Any>?) }
+            .forEach { record.addConstructor<CtRecord>(it as CtConstructor<Any>) }
     }
 
     /**
@@ -123,8 +124,6 @@ internal class ClassToRecordConverter2(
 
     /**
      * Copies all statements that do not need special record treatment.
-     *
-     * TODO: include CtAnonymousExecutable aka. static initializers => https://github.com/INRIA/spoon/issues/4961
      */
     private fun copyUnhandledStatements() {
         classExtension.typeMembers
@@ -132,7 +131,6 @@ internal class ClassToRecordConverter2(
                 d !is CtField<*>
                         && d !is CtMethod<*>
                         && d !is CtConstructor<*>
-                        && d !is CtAnonymousExecutable
             }
             .forEach { record.addTypeMember<CtType<Any>>(it) }
     }
