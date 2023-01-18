@@ -3,7 +3,7 @@ package analyzers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import org.eclipse.jdt.core.dom.*
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.*
 import java.util.*
 
 

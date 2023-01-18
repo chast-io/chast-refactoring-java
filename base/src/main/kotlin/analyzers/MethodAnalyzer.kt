@@ -1,6 +1,6 @@
 package analyzers
 
-import org.eclipse.jdt.core.dom.*
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.*
 
 
 open class MethodAnalyzer(val method: MethodDeclaration) : Analyzer() {

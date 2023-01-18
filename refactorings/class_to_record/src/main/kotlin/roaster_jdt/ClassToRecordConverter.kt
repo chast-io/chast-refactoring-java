@@ -1,7 +1,9 @@
-import RefactorUtils.copyNode
+package roaster_jdt
+
+import roaster_jdt.RefactorUtils.copyNode
 import analyzers.TypeAnalyzer
-import org.eclipse.jdt.core.dom.*
-import org.eclipse.jdt.core.dom.rewrite.ASTRewrite
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.*
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.rewrite.ASTRewrite
 
 internal class ClassToRecordConverter(
     private val baseClass: TypeDeclaration,
